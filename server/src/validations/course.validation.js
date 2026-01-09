@@ -5,7 +5,7 @@ const createCourse = {
   body: Joi.object().keys({
     title: Joi.string().required(),
     slug: Joi.string().required(),
-    thumbnail_url: Joi.string().uri().allow('', null),
+    imageURL: Joi.string().uri().allow('', null),
     pricing: Joi.object()
       .keys({
         price: Joi.number().min(0),
@@ -25,7 +25,7 @@ const updateCourse = {
     .keys({
       title: Joi.string(),
       slug: Joi.string(),
-      thumbnail_url: Joi.string().uri().allow('', null),
+      imageURL: Joi.string().uri().allow('', null),
       pricing: Joi.object().keys({
         price: Joi.number().min(0),
         sale_price: Joi.number().min(0),
@@ -174,19 +174,101 @@ const createQuestionForQuiz = {
   }),
 };
 
+const getCoursesByInstructor = {
+  params: Joi.object().keys({
+    instructorId: Joi.string().custom(objectId),
+  }),
+  query: Joi.object().keys({
+    sortBy: Joi.string(),
+    limit: Joi.number().integer(),
+    page: Joi.number().integer(),
+  }),
+};
+
+const getCoursesByCategory = {
+  params: Joi.object().keys({
+    categoryId: Joi.string().custom(objectId),
+  }),
+  query: Joi.object().keys({
+    sortBy: Joi.string(),
+    limit: Joi.number().integer(),
+    page: Joi.number().integer(),
+  }),
+};
+
+const getCourseBySlug = {
+  params: Joi.object().keys({
+    slug: Joi.string().required(),
+  }),
+};
+
+const publishCourse = {
+  params: Joi.object().keys({
+    courseId: Joi.string().custom(objectId),
+  }),
+};
+
+const unpublishCourse = {
+  params: Joi.object().keys({
+    courseId: Joi.string().custom(objectId),
+  }),
+};
+
+const updateCourseRating = {
+  params: Joi.object().keys({
+    courseId: Joi.string().custom(objectId),
+  }),
+  body: Joi.object().keys({
+    rating: Joi.number().min(1).max(5).required(),
+  }),
+};
+
+const searchCourses = {
+  query: Joi.object().keys({
+    q: Joi.string(),
+    level: Joi.string().valid('beginner', 'intermediate', 'advanced'),
+    category_id: Joi.string().custom(objectId),
+    min_price: Joi.number().min(0),
+    max_price: Joi.number().min(0),
+    sortBy: Joi.string(),
+    limit: Joi.number().integer(),
+    page: Joi.number().integer(),
+  }),
+};
+
+const getCourseModules = {
+  params: Joi.object().keys({
+    courseId: Joi.string().custom(objectId),
+  }),
+};
+
+const getCourseOverview = {
+  params: Joi.object().keys({
+    courseId: Joi.string().custom(objectId),
+  }),
+};
+
 module.exports = {
   createCourse,
+  getCourses,
+  getCourse,
+  getCourseBySlug,
+  updateCourse,
+  deleteCourse,
+  getCoursesByInstructor,
+  getCoursesByCategory,
+  publishCourse,
+  unpublishCourse,
+  updateCourseRating,
+  searchCourses,
+  getCourseModules,
+  getCourseOverview,
+  // Keep existing validations for backward compatibility
   createModule,
   createLesson,
   createQuestionForQuiz,
-  getCourses,
-  getCourse,
-  updateCourse,
-  deleteCourse,
   getModules,
   getLessonsByModule,
   getLessonDetail,
   getQuizQuestions,
 };
-
-

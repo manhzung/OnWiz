@@ -1,5 +1,6 @@
 module.exports.Token = require('./token.model');
 module.exports.User = require('./user.model');
+module.exports.Category = require('./category.model').Category;
 module.exports.Course = require('./course.model');
 module.exports.Module = require('./module.model');
 module.exports.Lesson = require('./lesson.model').Lesson;

@@ -46,5 +46,3 @@ lessonQuizSchema.plugin(paginate);
 const LessonQuiz = mongoose.model('LessonQuiz', lessonQuizSchema);
 
 module.exports = LessonQuiz;
-
-

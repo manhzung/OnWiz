@@ -54,5 +54,3 @@ questionMultipleChoiceSchema.plugin(paginate);
 const QuestionMultipleChoice = mongoose.model('QuestionMultipleChoice', questionMultipleChoiceSchema);
 
 module.exports = QuestionMultipleChoice;
-
-

@@ -40,13 +40,28 @@ const paginate = (schema) => {
     let docsPromise = this.find(filter).sort(sort).skip(skip).limit(limit);
 
     if (options.populate) {
-      options.populate.split(',').forEach((populateOption) => {
-        docsPromise = docsPromise.populate(
-          populateOption
-            .split('.')
-            .reverse()
-            .reduce((a, b) => ({ path: b, populate: a }))
-        );
+      let populateOptions = [];
+
+      // Handle both string and array formats
+      if (typeof options.populate === 'string') {
+        populateOptions = options.populate.split(',');
+      } else if (Array.isArray(options.populate)) {
+        populateOptions = options.populate;
+      }
+
+      populateOptions.forEach((populateOption) => {
+        if (typeof populateOption === 'string') {
+          // Handle string format with dot notation
+          docsPromise = docsPromise.populate(
+            populateOption
+              .split('.')
+              .reverse()
+              .reduce((a, b) => ({ path: b, populate: a }))
+          );
+        } else if (typeof populateOption === 'object') {
+          // Handle object format (direct populate object)
+          docsPromise = docsPromise.populate(populateOption);
+        }
       });
     }
 

@@ -40,5 +40,3 @@ module.exports = {
   Message,
   MESSAGE_TYPES,
 };
-
-

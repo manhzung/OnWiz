@@ -66,6 +66,44 @@ const updateUserById = async (userId, updateBody) => {
 };
 
 /**
+ * Update user wallet balance
+ * @param {ObjectId} userId
+ * @param {Object} walletUpdate
+ * @returns {Promise<User>}
+ */
+const updateUserWallet = async (userId, walletUpdate) => {
+  const user = await getUserById(userId);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
+  // Validate wallet update
+  if (walletUpdate.balance !== undefined && walletUpdate.balance < 0) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Wallet balance cannot be negative');
+  }
+
+  Object.assign(user.wallet, walletUpdate);
+  await user.save();
+  return user;
+};
+
+/**
+ * Update user image URL
+ * @param {ObjectId} userId
+ * @param {string} imageURL
+ * @returns {Promise<User>}
+ */
+const updateUserImageURL = async (userId, imageURL) => {
+  const user = await getUserById(userId);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  user.imageURL = imageURL;
+  await user.save();
+  return user;
+};
+
+/**
  * Delete user by id
  * @param {ObjectId} userId
  * @returns {Promise<User>}
@@ -75,7 +113,54 @@ const deleteUserById = async (userId) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
-  await user.remove();
+  await user.deleteOne();
+  return user;
+};
+
+/**
+ * Get user statistics
+ * @returns {Promise<Object>}
+ */
+const getUserStats = async () => {
+  const totalUsers = await User.countDocuments();
+  const activeUsers = await User.countDocuments({ is_active: true });
+  const adminUsers = await User.countDocuments({ role: 'admin' });
+  const studentUsers = await User.countDocuments({ role: 'student' });
+
+  // Calculate total wallet balance
+  const walletStats = await User.aggregate([
+    {
+      $group: {
+        _id: null,
+        totalBalance: { $sum: '$wallet.balance' },
+        avgBalance: { $avg: '$wallet.balance' },
+      },
+    },
+  ]);
+
+  return {
+    totalUsers,
+    activeUsers,
+    inactiveUsers: totalUsers - activeUsers,
+    adminUsers,
+    studentUsers,
+    wallet: walletStats[0] || { totalBalance: 0, avgBalance: 0 },
+  };
+};
+
+/**
+ * Toggle user active status
+ * @param {ObjectId} userId
+ * @returns {Promise<User>}
+ */
+const toggleUserStatus = async (userId) => {
+  const user = await getUserById(userId);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
+  user.is_active = !user.is_active;
+  await user.save();
   return user;
 };
 
@@ -85,5 +170,9 @@ module.exports = {
   getUserById,
   getUserByEmail,
   updateUserById,
+  updateUserImageURL,
+  updateUserWallet,
   deleteUserById,
+  getUserStats,
+  toggleUserStatus,
 };

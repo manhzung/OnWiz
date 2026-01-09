@@ -1,6 +1,7 @@
 const express = require('express');
 const authRoute = require('./auth.route');
 const userRoute = require('./user.route');
+const categoryRoute = require('./category.route');
 const courseRoute = require('./course.route');
 const moduleRoute = require('./module.route');
 const lessonRoute = require('./lesson.route');
@@ -12,6 +13,7 @@ const attemptRoute = require('./attempt.route');
 const classroomRoute = require('./classroom.route');
 const messageRoute = require('./message.route');
 const notificationRoute = require('./notification.route');
+const uploadRoute = require('./upload.route');
 const docsRoute = require('./docs.route');
 const config = require('../../config/config');
 
@@ -25,6 +27,10 @@ const defaultRoutes = [
   {
     path: '/users',
     route: userRoute,
+  },
+  {
+    path: '/categories',
+    route: categoryRoute,
   },
   {
     path: '/courses',
@@ -69,6 +75,10 @@ const defaultRoutes = [
   {
     path: '/notifications',
     route: notificationRoute,
+  },
+  {
+    path: '/upload',
+    route: uploadRoute,
   },
 ];
 

@@ -9,22 +9,22 @@ const ApiError = require('../utils/ApiError');
  *
  * @param {string[]} allowedRoles - ví dụ: ['admin', 'student']
  */
-const requireRole = (allowedRoles = []) => (req, res, next) => {
-  passport.authenticate('jwt', { session: false }, (err, user, info) => {
-    if (err || info || !user) {
-      return next(new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate'));
-    }
+const requireRole =
+  (allowedRoles = []) =>
+  (req, res, next) => {
+    passport.authenticate('jwt', { session: false }, (err, user, info) => {
+      if (err || info || !user) {
+        return next(new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate'));
+      }
 
-    req.user = user;
+      req.user = user;
 
-    if (allowedRoles.length && !allowedRoles.includes(user.role)) {
-      return next(new ApiError(httpStatus.FORBIDDEN, 'Forbidden'));
-    }
+      if (allowedRoles.length && !allowedRoles.includes(user.role)) {
+        return next(new ApiError(httpStatus.FORBIDDEN, 'Forbidden'));
+      }
 
-    return next();
-  })(req, res, next);
-};
+      return next();
+    })(req, res, next);
+  };
 
 module.exports = requireRole;
-
-

@@ -53,5 +53,3 @@ module.exports = {
   Lesson,
   LESSON_TYPES,
 };
-
-

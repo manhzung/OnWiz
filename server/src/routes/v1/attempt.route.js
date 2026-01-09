@@ -1,4 +1,5 @@
 const express = require('express');
+const auth = require('../../middlewares/auth');
 const requireRole = require('../../middlewares/requireRole');
 const validate = require('../../middlewares/validate');
 const attemptValidation = require('../../validations/attempt.validation');
@@ -8,16 +9,15 @@ const router = express.Router();
 
 router
   .route('/')
-  .post(requireRole(), validate(attemptValidation.createAttempt), attemptController.createAttempt)
-  .get(requireRole(), validate(attemptValidation.getAttempts), attemptController.getAttempts);
+  .post(auth, requireRole(), validate(attemptValidation.createAttempt), attemptController.createAttempt)
+  .get(auth, requireRole(), validate(attemptValidation.getAttempts), attemptController.getAttempts);
 
 router
   .route('/:attemptId')
-  .get(requireRole(), validate(attemptValidation.getAttempt), attemptController.getAttempt)
-  .delete(requireRole(), validate(attemptValidation.deleteAttempt), attemptController.deleteAttempt);
+  .get(auth, requireRole(), validate(attemptValidation.getAttempt), attemptController.getAttempt)
+  .delete(auth, requireRole(), validate(attemptValidation.deleteAttempt), attemptController.deleteAttempt);
 
 module.exports = router;
-
 
 /**
  * @swagger
@@ -136,4 +136,3 @@ module.exports = router;
  *       "404":
  *         $ref: '#/components/responses/NotFound'
  */
-

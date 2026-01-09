@@ -1,4 +1,5 @@
 const express = require('express');
+const auth = require('../../middlewares/auth');
 const requireRole = require('../../middlewares/requireRole');
 const validate = require('../../middlewares/validate');
 const userValidation = require('../../validations/user.validation');
@@ -8,14 +9,29 @@ const router = express.Router();
 
 router
   .route('/')
-  .post(requireRole(['admin']), validate(userValidation.createUser), userController.createUser)
-  .get(requireRole(['admin']), validate(userValidation.getUsers), userController.getUsers);
+  .post(auth, requireRole(['admin']), validate(userValidation.createUser), userController.createUser)
+  .get(auth, requireRole(['admin']), validate(userValidation.getUsers), userController.getUsers);
+
+router
+  .route('/profile/me')
+  .get(auth, userController.getCurrentUser)
+  .patch(auth, validate(userValidation.updateCurrentUser), userController.updateCurrentUser);
+
+router.route('/stats').get(auth, requireRole(['admin']), userController.getUserStats);
 
 router
   .route('/:userId')
-  .get(requireRole(['admin']), validate(userValidation.getUser), userController.getUser)
-  .patch(requireRole(['admin']), validate(userValidation.updateUser), userController.updateUser)
-  .delete(requireRole(['admin']), validate(userValidation.deleteUser), userController.deleteUser);
+  .get(auth, requireRole(['admin']), validate(userValidation.getUser), userController.getUser)
+  .patch(auth, requireRole(['admin']), validate(userValidation.updateUser), userController.updateUser)
+  .delete(auth, requireRole(['admin']), validate(userValidation.deleteUser), userController.deleteUser);
+
+router
+  .route('/:userId/wallet')
+  .patch(auth, requireRole(['admin']), validate(userValidation.updateUserWallet), userController.updateUserWallet);
+
+router
+  .route('/:userId/toggle-status')
+  .patch(auth, requireRole(['admin']), validate(userValidation.toggleUserStatus), userController.toggleUserStatus);
 
 module.exports = router;
 

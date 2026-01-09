@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const { toJSON, paginate } = require('./plugins');
 
-const TRANSACTION_TYPES = ['deposit', 'payment', 'refund'];
+const TRANSACTION_TYPES = ['deposit', 'purchase', 'refund', 'withdrawal'];
+const TRANSACTION_STATUSES = ['completed', 'pending', 'failed'];
 
 const transactionSchema = new mongoose.Schema(
   {
@@ -22,6 +23,20 @@ const transactionSchema = new mongoose.Schema(
     balance_after: {
       type: Number,
       required: true,
+    },
+    status: {
+      type: String,
+      enum: TRANSACTION_STATUSES,
+      default: 'completed',
+    },
+    date: {
+      type: String,
+      required: true,
+    },
+    courseId: {
+      type: String,
+      trim: true,
+      default: '',
     },
     reference_id: {
       type: mongoose.Schema.Types.ObjectId,
@@ -46,6 +61,5 @@ const Transaction = mongoose.model('Transaction', transactionSchema);
 module.exports = {
   Transaction,
   TRANSACTION_TYPES,
+  TRANSACTION_STATUSES,
 };
-
-

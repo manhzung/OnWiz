@@ -42,6 +42,14 @@ const enrollmentSchema = new mongoose.Schema(
       ],
       default: [],
     },
+    completedLessons: {
+      type: Number,
+      default: 0,
+    },
+    totalLessons: {
+      type: Number,
+      default: 0,
+    },
     current_position: {
       type: currentPositionSchema,
       default: () => ({}),
@@ -51,6 +59,10 @@ const enrollmentSchema = new mongoose.Schema(
       default: 0,
       min: 0,
       max: 100,
+    },
+    lastAccessedAt: {
+      type: String,
+      default: '',
     },
     status: {
       type: String,
@@ -72,5 +84,3 @@ module.exports = {
   Enrollment,
   ENROLLMENT_STATUS,
 };
-
-

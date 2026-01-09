@@ -1,0 +1,1 @@
+export { WalletCourses } from './WalletCourses';

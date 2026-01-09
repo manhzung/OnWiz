@@ -38,5 +38,3 @@ module.exports = {
   Notification,
   NOTIFICATION_TYPES,
 };
-
-

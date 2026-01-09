@@ -55,6 +55,10 @@ const orderSchema = new mongoose.Schema(
       enum: PAYMENT_METHODS,
       required: true,
     },
+    accessExpiresAt: {
+      type: String,
+      default: '',
+    },
   },
   {
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
@@ -71,5 +75,3 @@ module.exports = {
   ORDER_STATUSES,
   PAYMENT_METHODS,
 };
-
-

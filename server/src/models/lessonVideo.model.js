@@ -38,5 +38,3 @@ module.exports = {
   LessonVideo,
   VIDEO_PROVIDERS,
 };
-
-

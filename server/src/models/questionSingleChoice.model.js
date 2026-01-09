@@ -54,5 +54,3 @@ questionSingleChoiceSchema.plugin(paginate);
 const QuestionSingleChoice = mongoose.model('QuestionSingleChoice', questionSingleChoiceSchema);
 
 module.exports = QuestionSingleChoice;
-
-

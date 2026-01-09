@@ -59,5 +59,3 @@ attemptSchema.plugin(paginate);
 const Attempt = mongoose.model('Attempt', attemptSchema);
 
 module.exports = Attempt;
-
-

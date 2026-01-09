@@ -49,5 +49,3 @@ module.exports = {
   QUESTION_TYPES,
   DIFFICULTIES,
 };
-
-

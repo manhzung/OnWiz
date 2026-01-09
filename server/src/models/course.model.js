@@ -36,9 +36,24 @@ const courseSchema = new mongoose.Schema(
       trim: true,
       unique: true,
     },
+    description: {
+      type: String,
+      trim: true,
+      default: '',
+    },
     instructor_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
+      required: true,
+    },
+    instructor: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    category_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category',
       required: true,
     },
     thumbnail_url: {
@@ -51,6 +66,43 @@ const courseSchema = new mongoose.Schema(
     pricing: {
       type: pricingSchema,
       default: () => ({}),
+    },
+
+    // Rating and reviews
+    rating: {
+      type: Number,
+      min: 0,
+      max: 5,
+      default: 0,
+    },
+    totalRatings: {
+      type: Number,
+      default: 0,
+    },
+    students: {
+      type: Number,
+      default: 0,
+    },
+
+    // Course metadata
+    level: {
+      type: String,
+      enum: ['beginner', 'intermediate', 'advanced'],
+      default: 'beginner',
+    },
+    duration: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    type: {
+      type: String,
+      enum: ['Course', 'Specialization', 'Professional Certificate'],
+      default: 'Course',
+    },
+    tags: {
+      type: [String],
+      default: [],
     },
 
     // Thứ tự các module trong khóa học
@@ -68,6 +120,11 @@ const courseSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    imageURL: {
+      type: String,
+      default: '',
+      trim: true,
+    },
     is_published: {
       type: Boolean,
       default: false,
@@ -84,5 +141,3 @@ courseSchema.plugin(paginate);
 const Course = mongoose.model('Course', courseSchema);
 
 module.exports = Course;
-
-

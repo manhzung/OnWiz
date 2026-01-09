@@ -11,12 +11,6 @@ const userSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
-    username: {
-      type: String,
-      required: true,
-      trim: true,
-      unique: true,
-    },
     email: {
       type: String,
       required: true,
@@ -69,6 +63,11 @@ const userSchema = mongoose.Schema(
     isEmailVerified: {
       type: Boolean,
       default: false,
+    },
+    imageURL: {
+      type: String,
+      default: '',
+      trim: true,
     },
   },
   {

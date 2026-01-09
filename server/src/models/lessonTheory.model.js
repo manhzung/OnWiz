@@ -41,5 +41,3 @@ lessonTheorySchema.plugin(paginate);
 const LessonTheory = mongoose.model('LessonTheory', lessonTheorySchema);
 
 module.exports = LessonTheory;
-
-

@@ -19,6 +19,37 @@ const memberSchema = new mongoose.Schema(
   { _id: false }
 );
 
+const materialSchema = new mongoose.Schema(
+  {
+    user_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    filename: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    material_url: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    file_size: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+    file_type: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+  },
+  { timestamps: { createdAt: 'uploaded_at', updatedAt: false } }
+);
+
 const classroomSchema = new mongoose.Schema(
   {
     name: {
@@ -39,6 +70,15 @@ const classroomSchema = new mongoose.Schema(
       ],
       default: [],
     },
+    imageURL: {
+      type: String,
+      default: '',
+      trim: true,
+    },
+    materials: {
+      type: [materialSchema],
+      default: [],
+    },
   },
   {
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' },
@@ -54,5 +94,3 @@ module.exports = {
   Classroom,
   CLASSROOM_ROLES,
 };
-
-

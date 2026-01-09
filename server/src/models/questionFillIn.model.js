@@ -30,5 +30,3 @@ questionFillInSchema.plugin(paginate);
 const QuestionFillIn = mongoose.model('QuestionFillIn', questionFillInSchema);
 
 module.exports = QuestionFillIn;
-
-
